@@ -26,7 +26,7 @@
                 const wmsLayerCaps = wmsCapabilities.getNamedLayer('ve');
                 const wmsLayerConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCaps);
                 const wmsLayer = new WorldWind.WmsLayer(wmsLayerConfig);
-                wmsLayer.detailControl = 1.25;
+                //wmsLayer.detailControl = 1.25;
                 const idx = wwd.layers.indexOf(bing);
                 if (idx >= 0) {
                     wwd.layers[idx] = wmsLayer;

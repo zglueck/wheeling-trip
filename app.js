@@ -16,6 +16,26 @@
     const trailsLayer = new WorldWind.RenderableLayer('Trails Layer');
     wwd.addLayer(trailsLayer);
 
+    const addWw27 = () => {
+        const serviceAddress = 'https://worldwind27.arc.nasa.gov/wms/virtualearth?service=WMS&request=GetCapabilities';
+        fetch(serviceAddress)
+            .then(response => response.text())
+            .then(text => new DOMParser().parseFromString(text, 'text/xml'))
+            .then(xml => {
+                const wmsCapabilities = new WorldWind.WmsCapabilities(xml);
+                const wmsLayerCaps = wmsCapabilities.getNamedLayer('ve');
+                const wmsLayerConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCaps);
+                const wmsLayer = new WorldWind.WmsLayer(wmsLayerConfig);
+                wmsLayer.detailControl = 1.25;
+                const idx = wwd.layers.indexOf(bing);
+                if (idx >= 0) {
+                    wwd.layers[idx] = wmsLayer;
+                }
+            })
+            .catch(console.err);
+    };
+    addWw27();
+
     const parseGpx = xml => {
 
         const parseTrkSeg = element => {
@@ -117,7 +137,7 @@
             });
     };
 
-    addLayers();
+    //addLayers();
 
     for (let i = 0; i < tracks.length; i++) {
         fetchAndParseTracks(tracks[i]);
